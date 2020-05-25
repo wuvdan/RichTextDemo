@@ -10,4 +10,6 @@ target 'RichTextView' do
  pod 'XNProgressHUD'
  pod 'UITextView+Placeholder'
  pod 'LYEmptyView'
+ 
+ pod 'Realm' 
 end

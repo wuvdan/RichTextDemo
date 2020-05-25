@@ -9,6 +9,10 @@
 #import "AppDelegate.h"
 #import <JQFMDB.h>
 #import "Model.h"
+#import "ICloudDocument.h"
+#import <XNProgressHUD.h>
+#import "HomeViewController.h"
+#import <Realm.h>
 @interface AppDelegate ()
 
 @end
@@ -18,17 +22,24 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    NSLog(@"%@", NSHomeDirectory());
-    
     [JQFMDB shareDatabase:@"*DoNotDelete.db"];
     if (![[JQFMDB shareDatabase] jq_isExistTable:@"MyNote"]) {
         [[JQFMDB shareDatabase] jq_createTable:@"MyNote" dicOrModel:[Model class]];
     }
-    self.window.backgroundColor = [UIColor whiteColor];
+    
+    // 默认配置
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    // 获取 Realm 文件的父目录
+    NSString *folderPath = realm.configuration.fileURL.URLByDeletingLastPathComponent.path;
+    // 禁用此目录的文件保护
+    [[NSFileManager defaultManager] setAttributes:@{NSFileProtectionKey: NSFileProtectionNone}
+                                     ofItemAtPath:folderPath error:nil];
+    
+    
+    NSLog(@"%@", NSHomeDirectory());
+
     return YES;
 }
-
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

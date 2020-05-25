@@ -13,6 +13,9 @@
 		4849834B2477ADD100194115 /* xiaonan.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 484983482477A5CA00194115 /* xiaonan.ttf */; };
 		484983512477B98B00194115 /* NSObject+RichTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484983502477B98B00194115 /* NSObject+RichTextView.m */; };
 		484983542477BBD200194115 /* WDImageTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 484983532477BBD200194115 /* WDImageTextAttachment.m */; };
+		487D9A63247BBCFB0024250A /* RecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 487D9A62247BBCFB0024250A /* RecordModel.m */; };
+		489AD03F247B905D00A9D5D6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489AD03E247B905D00A9D5D6 /* CloudKit.framework */; };
+		489AD042247B908200A9D5D6 /* ICloudDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 489AD041247B908200A9D5D6 /* ICloudDocument.m */; };
 		48AF77E22476567E00E6171C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF77E12476567E00E6171C /* AppDelegate.m */; };
 		48AF77E52476567E00E6171C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF77E42476567E00E6171C /* ViewController.m */; };
 		48AF77E82476567E00E6171C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48AF77E62476567E00E6171C /* Main.storyboard */; };
@@ -62,6 +65,12 @@
 		484983532477BBD200194115 /* WDImageTextAttachment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WDImageTextAttachment.m; sourceTree = "<group>"; };
 		484983552477BD1600194115 /* WDRichTextHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WDRichTextHeader.h; sourceTree = "<group>"; };
 		484983562477C8E400194115 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		487D9A61247BBCFB0024250A /* RecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecordModel.h; sourceTree = "<group>"; };
+		487D9A62247BBCFB0024250A /* RecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecordModel.m; sourceTree = "<group>"; };
+		489AD03D247B905400A9D5D6 /* 记事本.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "记事本.entitlements"; sourceTree = "<group>"; };
+		489AD03E247B905D00A9D5D6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		489AD040247B908200A9D5D6 /* ICloudDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICloudDocument.h; sourceTree = "<group>"; };
+		489AD041247B908200A9D5D6 /* ICloudDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ICloudDocument.m; sourceTree = "<group>"; };
 		48AF77DD2476567E00E6171C /* 记事本.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "记事本.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48AF77E02476567E00E6171C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		48AF77E12476567E00E6171C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -137,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA20446B60323B468142DEB6 /* libPods-RichTextView.a in Frameworks */,
+				489AD03F247B905D00A9D5D6 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,12 +174,17 @@
 		48AF77DF2476567E00E6171C /* RichTextView */ = {
 			isa = PBXGroup;
 			children = (
+				489AD03D247B905400A9D5D6 /* 记事本.entitlements */,
 				48D01DD72478BE46001F0516 /* SIXEditor */,
 				48AF77FF2476589300E6171C /* RichVCUtil */,
 				48AF77E02476567E00E6171C /* AppDelegate.h */,
 				48AF77E12476567E00E6171C /* AppDelegate.m */,
+				489AD040247B908200A9D5D6 /* ICloudDocument.h */,
+				489AD041247B908200A9D5D6 /* ICloudDocument.m */,
 				48AF784C2476701F00E6171C /* Model.h */,
 				48AF784D2476701F00E6171C /* Model.m */,
+				487D9A61247BBCFB0024250A /* RecordModel.h */,
+				487D9A62247BBCFB0024250A /* RecordModel.m */,
 				48AF784924766AC700E6171C /* HomeViewController.h */,
 				48AF784A24766AC700E6171C /* HomeViewController.m */,
 				48D01DED2478F5B5001F0516 /* AliyunOSSManager.h */,
@@ -277,6 +292,7 @@
 		9D21A9F5F1BEAE30EE75D3B2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				489AD03E247B905D00A9D5D6 /* CloudKit.framework */,
 				484983562477C8E400194115 /* libsqlite3.tbd */,
 				65D6DC0AD30AC09AE39A30B7 /* libPods-RichTextView.a */,
 			);
@@ -435,6 +451,8 @@
 				48AF78422476599000E6171C /* NSData+ImageContentType.m in Sources */,
 				48AF780F2476589300E6171C /* PictureModel.m in Sources */,
 				48AF77F02476567F00E6171C /* main.m in Sources */,
+				489AD042247B908200A9D5D6 /* ICloudDocument.m in Sources */,
+				487D9A63247BBCFB0024250A /* RecordModel.m in Sources */,
 				48AF77E22476567E00E6171C /* AppDelegate.m in Sources */,
 				48AF77F82476568D00E6171C /* RichTextView.m in Sources */,
 				48D01DE62478BE46001F0516 /* SIXEditorToolBar.m in Sources */,
@@ -584,6 +602,7 @@
 			baseConfigurationReference = 32D992D14BAAD36D4632D549 /* Pods-RichTextView.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "RichTextView/记事本.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5TU5547C6N;
 				INFOPLIST_FILE = RichTextView/Info.plist;
@@ -602,6 +621,7 @@
 			baseConfigurationReference = 8C685BD8E95B38A562848D73 /* Pods-RichTextView.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "RichTextView/记事本.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5TU5547C6N;
 				INFOPLIST_FILE = RichTextView/Info.plist;
