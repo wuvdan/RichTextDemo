@@ -1,0 +1,46 @@
+PODS:
+  - AliyunOSSiOS (2.10.8)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - HXPhotoPicker (2.4.2)
+  - JQFMDB (1.1.6):
+    - FMDB
+  - LYEmptyView (1.3.1)
+  - Masonry (1.1.0)
+  - "UITextView+Placeholder (1.4.0)"
+  - XNProgressHUD (1.1.1)
+
+DEPENDENCIES:
+  - AliyunOSSiOS
+  - HXPhotoPicker
+  - JQFMDB
+  - LYEmptyView
+  - Masonry
+  - "UITextView+Placeholder"
+  - XNProgressHUD
+
+SPEC REPOS:
+  trunk:
+    - AliyunOSSiOS
+    - FMDB
+    - HXPhotoPicker
+    - JQFMDB
+    - LYEmptyView
+    - Masonry
+    - "UITextView+Placeholder"
+    - XNProgressHUD
+
+SPEC CHECKSUMS:
+  AliyunOSSiOS: 8db92936545593b9e5c66d680ef2ac0738946651
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  HXPhotoPicker: 0b0751fe5d64271edefcd5cc4ffa9b6300ca58b7
+  JQFMDB: 39ab0d6d7c26fd30e51c4dd92edcb27506a34c3a
+  LYEmptyView: b6d418cfa38b78df0cf243f9a9c25ccbdc399922
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
+  XNProgressHUD: 5b9a7f1a484af6db05af1463ae00a00b645c1468
+
+PODFILE CHECKSUM: 7a282c84c0ff78d5ff22c4c121f9fd995c40eb10
+
+COCOAPODS: 1.9.1
