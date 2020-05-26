@@ -27,15 +27,19 @@
         [[JQFMDB shareDatabase] jq_createTable:@"MyNote" dicOrModel:[Model class]];
     }
     
-    // 默认配置
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    // 获取 Realm 文件的父目录
-    NSString *folderPath = realm.configuration.fileURL.URLByDeletingLastPathComponent.path;
-    // 禁用此目录的文件保护
-    [[NSFileManager defaultManager] setAttributes:@{NSFileProtectionKey: NSFileProtectionNone}
-                                     ofItemAtPath:folderPath error:nil];
-    
-    
+    NSArray *storeFilePath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+    NSString *doucumentsDirectiory = [storeFilePath objectAtIndex:0];
+    NSString *plistPath =[doucumentsDirectiory stringByAppendingPathComponent:@"*DoNotDelete.plist"];
+    NSFileManager *file = [NSFileManager defaultManager];
+    if ([file fileExistsAtPath:plistPath]) {
+        NSLog(@"you");
+    } else {
+        NSError *error;
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *bundle = [[NSBundle mainBundle] pathForResource:@"*DoNotDelete" ofType:@"plist"];
+        [fileManager copyItemAtPath:bundle toPath:plistPath error:&error];
+        NSLog(@"写入没有%d",[fileManager copyItemAtPath:bundle toPath:plistPath error:&error]);
+    }
     NSLog(@"%@", NSHomeDirectory());
 
     return YES;

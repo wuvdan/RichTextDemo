@@ -8,9 +8,6 @@ PODS:
     - FMDB
   - LYEmptyView (1.3.1)
   - Masonry (1.1.0)
-  - Realm (5.0.0):
-    - Realm/Headers (= 5.0.0)
-  - Realm/Headers (5.0.0)
   - "UITextView+Placeholder (1.4.0)"
   - XNProgressHUD (1.1.1)
 
@@ -20,7 +17,6 @@ DEPENDENCIES:
   - JQFMDB
   - LYEmptyView
   - Masonry
-  - Realm
   - "UITextView+Placeholder"
   - XNProgressHUD
 
@@ -32,7 +28,6 @@ SPEC REPOS:
     - JQFMDB
     - LYEmptyView
     - Masonry
-    - Realm
     - "UITextView+Placeholder"
     - XNProgressHUD
 
@@ -43,10 +38,9 @@ SPEC CHECKSUMS:
   JQFMDB: 39ab0d6d7c26fd30e51c4dd92edcb27506a34c3a
   LYEmptyView: b6d418cfa38b78df0cf243f9a9c25ccbdc399922
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  Realm: 76066d333de26f97e9caedaa85ee3ff4a62ca265
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
   XNProgressHUD: 5b9a7f1a484af6db05af1463ae00a00b645c1468
 
-PODFILE CHECKSUM: 62df1a62d0670c8e6b32e7d55c91ccbe849227bd
+PODFILE CHECKSUM: 9d3da2de4c20af5a9a72bf413934b8f8732be200
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4

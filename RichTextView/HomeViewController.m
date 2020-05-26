@@ -17,10 +17,12 @@
 
 @interface HomeViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray<Model *> *modelArray;
+@property (nonatomic, strong) NSArray<NSDictionary *> *modelArray;
 @end
 
 @implementation HomeViewController
+
+#define  kFullPath  ([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"*DoNotDelete.plist"])
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -53,15 +55,12 @@
 
 
 - (IBAction)uploadData:(id)sender {
-    NSString *fileName = @"*DoNotDelete.db";
 
     ICloudDocument *documents = [[ICloudDocument alloc] initWithFileURL:[self icloudContainerBaseURL]];
     [XNHUD showLoadingWithTitle:@"数据上传中..."];
-
-    NSString *documentPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSData *data = [NSData dataWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", documentPath, fileName]];
+    
+    NSData *data = [NSData dataWithContentsOfFile:kFullPath];
     if (data) {
-        // 如果本地有数据库，就同步到云端
         documents.data = data;
         [documents saveToURL:[self icloudContainerBaseURL] forSaveOperation:(UIDocumentSaveForCreating) completionHandler:^(BOOL success) {
             if (success) {
@@ -76,19 +75,15 @@
 }
 
 - (IBAction)downloadData:(id)sender {
-    
-    // 下载文件
-    NSString *fileName = @"*DoNotDelete.db";
-
     NSURLSession *session = [NSURLSession sharedSession];
     [XNHUD showLoadingWithTitle:@"数据下载中..."];
-    [[session downloadTaskWithURL:[self icloudContainerBaseURL] completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        // 获取到文件路径
+    [[session downloadTaskWithURL:[self icloudContainerBaseURL] completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {    
         if (!error) {
-            NSString *fullPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:fileName];
             NSError *error;
-            [[NSFileManager defaultManager] removeItemAtPath:fullPath error:&error];
-            [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:fullPath] error:&error];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:kFullPath]) {
+                [[NSFileManager defaultManager] removeItemAtPath:kFullPath error:&error];
+            }
+            [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:kFullPath] error:&error];
             [self updateData];
             [XNHUD showSuccessWithTitle:@"数据下载成功"];
         } else {
@@ -98,7 +93,8 @@
 }
 
 - (void)updateData {
-    self.modelArray = [[[[JQFMDB shareDatabase] jq_lookupTable:@"MyNote" dicOrModel:[Model class] whereFormat:nil] reverseObjectEnumerator] allObjects];
+    self.modelArray = [NSArray arrayWithContentsOfFile:kFullPath];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
@@ -108,7 +104,7 @@
     UIAlertController *alter = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"是否确认删除所有数据?" preferredStyle:UIAlertControllerStyleAlert];
     
     [alter addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[JQFMDB shareDatabase] jq_deleteAllDataFromTable:@"MyNote"];
+        [[NSFileManager defaultManager] removeItemAtPath:kFullPath error:nil];
         [self updateData];
     }]];
     
@@ -137,15 +133,23 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleSubtitle) reuseIdentifier:@"CellID"];
     }
-    cell.textLabel.text = self.modelArray[indexPath.row].contentText;
-    cell.detailTextLabel.text = self.modelArray[indexPath.row].createTime;
+    NSDictionary *dic = self.modelArray[indexPath.row];
+    
+    cell.textLabel.text = dic[@"contentText"];
+    cell.detailTextLabel.text = dic[@"createTime"];
+    
+//    cell.textLabel.text = self.modelArray[indexPath.row].contentText;
+//    cell.detailTextLabel.text = self.modelArray[indexPath.row].createTime;
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    ViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ViewController"];
     Demo1ViewController *vc = [[Demo1ViewController alloc] init];
-    vc.model = self.modelArray[indexPath.row];
+    Model *model = [[Model alloc] init];
+    NSDictionary *dic = self.modelArray[indexPath.row];
+    model.html = dic[@"html"];
+    vc.model = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -14,6 +14,7 @@
 		484983512477B98B00194115 /* NSObject+RichTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 484983502477B98B00194115 /* NSObject+RichTextView.m */; };
 		484983542477BBD200194115 /* WDImageTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 484983532477BBD200194115 /* WDImageTextAttachment.m */; };
 		487D9A63247BBCFB0024250A /* RecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 487D9A62247BBCFB0024250A /* RecordModel.m */; };
+		487D9AA3247BCB420024250A /* *DoNotDelete.plist in Resources */ = {isa = PBXBuildFile; fileRef = 487D9AA2247BCB420024250A /* *DoNotDelete.plist */; };
 		489AD03F247B905D00A9D5D6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489AD03E247B905D00A9D5D6 /* CloudKit.framework */; };
 		489AD042247B908200A9D5D6 /* ICloudDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 489AD041247B908200A9D5D6 /* ICloudDocument.m */; };
 		48AF77E22476567E00E6171C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF77E12476567E00E6171C /* AppDelegate.m */; };
@@ -67,6 +68,7 @@
 		484983562477C8E400194115 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		487D9A61247BBCFB0024250A /* RecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecordModel.h; sourceTree = "<group>"; };
 		487D9A62247BBCFB0024250A /* RecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecordModel.m; sourceTree = "<group>"; };
+		487D9AA2247BCB420024250A /* *DoNotDelete.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "*DoNotDelete.plist"; sourceTree = "<group>"; };
 		489AD03D247B905400A9D5D6 /* 记事本.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "记事本.entitlements"; sourceTree = "<group>"; };
 		489AD03E247B905D00A9D5D6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		489AD040247B908200A9D5D6 /* ICloudDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICloudDocument.h; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				48AF77E02476567E00E6171C /* AppDelegate.h */,
 				48AF77E12476567E00E6171C /* AppDelegate.m */,
 				489AD040247B908200A9D5D6 /* ICloudDocument.h */,
+				487D9AA2247BCB420024250A /* *DoNotDelete.plist */,
 				489AD041247B908200A9D5D6 /* ICloudDocument.m */,
 				48AF784C2476701F00E6171C /* Model.h */,
 				48AF784D2476701F00E6171C /* Model.m */,
@@ -373,6 +376,7 @@
 				4849834A2477AD8600194115 /* diymini.TTF in Resources */,
 				48D01DE92478BE46001F0516 /* SIXEditor.bundle in Resources */,
 				48AF77EA2476567F00E6171C /* Assets.xcassets in Resources */,
+				487D9AA3247BCB420024250A /* *DoNotDelete.plist in Resources */,
 				48AF77E82476567E00E6171C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,5 +11,5 @@ target 'RichTextView' do
  pod 'UITextView+Placeholder'
  pod 'LYEmptyView'
  
- pod 'Realm' 
+# pod 'Realm' 
 end

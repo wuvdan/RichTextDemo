@@ -61,7 +61,6 @@
     CGRectGetHeight(self.view.frame) - UIApplication.sharedApplication.statusBarFrame.size.height - 44);
 }
 
-
 #pragma mark - Keyboard notification
 
 - (void)onKeyboardNotification:(NSNotification *)notification {
@@ -105,55 +104,112 @@
 
 - (void)handleSaveContentButtonEvent:(id)sender {
     [self.view endEditing:YES];
-    
     NSArray *imageArray = [self.textView.attributedText getImgaeArray];
 
-    NSMutableArray *array = [NSMutableArray array];
-    [imageArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        AliyunOSSImageModel *model = [[AliyunOSSImageModel alloc] init];
-        if ([obj isKindOfClass:[NSString class]]) {
-            model.url = (NSString *)obj;
-        } else {
-            model.image = (UIImage *)obj;
-        }
-        model.index = idx;
-        [array addObject:model];
-    }];
-    
-    NSMutableArray *images = [NSMutableArray array];
-    
-    [SIXHTMLParser htmlStringWithAttributedText:self.textView.attributedText orignalHtml:@"" andCompletionHandler:^(NSString *html) {
-        __block NSString *htmlContent = html;
+    if (imageArray.count == 0) {
         
-        [AliyunOSSManager uploadFilesWithModels:array complete:^(NSArray<AliyunOSSImageModel *> * _Nonnull names, UploadImageState state) {
-            
-            [names enumerateObjectsUsingBlock:^(AliyunOSSImageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                htmlContent = [htmlContent stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"[tempImage '%ld']", obj.index]
-                                                                     withString:obj.url];
-                [images addObject:obj.url];
-            }];
+        [SIXHTMLParser htmlStringWithAttributedText:self.textView.attributedText orignalHtml:@"" andCompletionHandler:^(NSString *html) {
+            __block NSString *htmlContent = html;
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                Model *model = [[Model alloc] init];
-                model.html = htmlContent;
-                model.contentText = self.textView.text;
-                model.firstImageUrl = [images componentsJoinedByString:@","];
-                if (self.model) {
-                    model.pkid = self.model.pkid;
-                    [[JQFMDB shareDatabase] jq_deleteTable:@"MyNote" whereFormat:[NSString stringWithFormat:@"where pkid = %ld", (long)self.model.pkid]];
-                    [[JQFMDB shareDatabase] jq_insertTable:@"MyNote" dicOrModel:model];
-                } else {
-                    model.createTime = [self currentDateStr];
-                    [[JQFMDB shareDatabase] jq_insertTable:@"MyNote" dicOrModel:model];
-                }
+               NSDictionary *dic = @{@"contentText" : self.textView.text,
+                                     @"html" : htmlContent,
+                                     @"firstImageUrl" : @"",
+                                     @"createTime" : [self currentDateStr],
+                                     @"createTimestamp" : [self getCurrentTimestamp]};
+               
+               NSString *documentsPatch = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+               NSString *fullPath = [documentsPatch stringByAppendingPathComponent:@"*DoNotDelete.plist"];
+               
+               NSMutableArray *array = [NSMutableArray arrayWithContentsOfFile:fullPath];
+               [array addObject:dic];
+               [array writeToFile:fullPath atomically:YES];
 
-                [XNHUD showSuccessWithTitle:@"保存成功"];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.navigationController popViewControllerAnimated:YES];
-                });
-            });
+               
+               Model *model = [[Model alloc] init];
+               model.html = htmlContent;
+               model.contentText = self.textView.text;
+                model.firstImageUrl = @"";
+               if (self.model) {
+                   model.pkid = self.model.pkid;
+                   [[JQFMDB shareDatabase] jq_deleteTable:@"MyNote" whereFormat:[NSString stringWithFormat:@"where pkid = %ld", (long)self.model.pkid]];
+                   [[JQFMDB shareDatabase] jq_insertTable:@"MyNote" dicOrModel:model];
+               } else {
+                   model.createTime = [self currentDateStr];
+                   [[JQFMDB shareDatabase] jq_insertTable:@"MyNote" dicOrModel:model];
+               }
+
+               [XNHUD showSuccessWithTitle:@"保存成功"];
+               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                   [self.navigationController popViewControllerAnimated:YES];
+               });
+           });
         }];
-    }];
+        
+       
+    } else {
+        NSMutableArray *array = [NSMutableArray array];
+        [imageArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            AliyunOSSImageModel *model = [[AliyunOSSImageModel alloc] init];
+            if ([obj isKindOfClass:[NSString class]]) {
+                model.url = (NSString *)obj;
+            } else {
+                model.image = (UIImage *)obj;
+            }
+            model.index = idx;
+            [array addObject:model];
+        }];
+        
+        NSMutableArray *images = [NSMutableArray array];
+        
+        [SIXHTMLParser htmlStringWithAttributedText:self.textView.attributedText orignalHtml:@"" andCompletionHandler:^(NSString *html) {
+            __block NSString *htmlContent = html;
+            
+            [AliyunOSSManager uploadFilesWithModels:array complete:^(NSArray<AliyunOSSImageModel *> * _Nonnull names, UploadImageState state) {
+                
+                [names enumerateObjectsUsingBlock:^(AliyunOSSImageModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    htmlContent = [htmlContent stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"[tempImage '%ld']", obj.index]
+                                                                         withString:obj.url];
+                    [images addObject:obj.url];
+                }];
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    NSDictionary *dic = @{@"contentText" : self.textView.text,
+                                          @"html" : htmlContent,
+                                          @"firstImageUrl" : [images componentsJoinedByString:@","],
+                                          @"createTime" : [self currentDateStr],
+                                          @"createTimestamp" : [self getCurrentTimestamp]};
+                    
+                    NSString *documentsPatch = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+                    NSString *fullPath = [documentsPatch stringByAppendingPathComponent:@"*DoNotDelete.plist"];
+                    
+                    NSMutableArray *array = [NSMutableArray arrayWithContentsOfFile:fullPath];
+                    [array addObject:dic];
+                    [array writeToFile:fullPath atomically:YES];
+
+                    
+                    Model *model = [[Model alloc] init];
+                    model.html = htmlContent;
+                    model.contentText = self.textView.text;
+                    model.firstImageUrl = [images componentsJoinedByString:@","];
+                    if (self.model) {
+                        model.pkid = self.model.pkid;
+                        [[JQFMDB shareDatabase] jq_deleteTable:@"MyNote" whereFormat:[NSString stringWithFormat:@"where pkid = %ld", (long)self.model.pkid]];
+                        [[JQFMDB shareDatabase] jq_insertTable:@"MyNote" dicOrModel:model];
+                    } else {
+                        model.createTime = [self currentDateStr];
+                        [[JQFMDB shareDatabase] jq_insertTable:@"MyNote" dicOrModel:model];
+                    }
+
+                    [XNHUD showSuccessWithTitle:@"保存成功"];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                });
+            }];
+        }];
+    }
 }
 
 //获取当前时间
@@ -163,6 +219,14 @@
     [dateFormatter setDateFormat:@"YYYY/MM/dd hh:mm"];//设定时间格式,这里可以设置成自己需要的格式
     NSString *dateString = [dateFormatter stringFromDate:currentDate];//将时间转化成字符串
     return dateString;
+}
+
+// 获取当前时间戳
+- (NSString *)getCurrentTimestamp {
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0]; // 获取当前时间0秒后的时间
+    NSTimeInterval time = [date timeIntervalSince1970]*1000;// *1000 是精确到毫秒(13位),不乘就是精确到秒(10位)
+    NSString *timeString = [NSString stringWithFormat:@"%.0f", time];
+    return timeString;
 }
 
 #pragma mark - Getter Method
